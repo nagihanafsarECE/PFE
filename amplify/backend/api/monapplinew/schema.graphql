@@ -1,0 +1,61 @@
+type JeuHistory @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  jeuId: ID
+  userID: ID! @index(name: "byUser")
+  pts: Int
+}
+
+type TJeu @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  text: String
+  QJeus: [QJeu] @hasMany(indexName: "byTJeu", fields: ["id"])
+}
+
+type AJeu @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  text: String
+  qjeus: [QJeu] @manyToMany(relationName: "QJeuAJeu")
+}
+
+type QJeu @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  text: String
+  AJeus: [AJeu] @manyToMany(relationName: "QJeuAJeu")
+  AcceptedAJeu: AJeu @hasOne
+  tjeuID: ID! @index(name: "byTJeu")
+}
+
+type QuizHistory @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  quizId: ID
+  userID: ID! @index(name: "byUser")
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  quizCount: Int
+  QuizHistories: [QuizHistory] @hasMany(indexName: "byUser", fields: ["id"])
+  jeuPoints: Int
+  JeuHistories: [JeuHistory] @hasMany(indexName: "byUser", fields: ["id"])
+}
+
+type Theme @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  text: String
+  Questions: [Question] @hasMany(indexName: "byTheme", fields: ["id"])
+}
+
+type Answer @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  text: String
+  questions: [Question] @manyToMany(relationName: "QuestionAnswer")
+}
+
+type Question @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  text: String
+  Answers: [Answer] @manyToMany(relationName: "QuestionAnswer")
+  AcceptedAnswer: Answer @hasOne
+  themeID: ID! @index(name: "byTheme")
+}
+ 

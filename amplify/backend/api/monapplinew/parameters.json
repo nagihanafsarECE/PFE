@@ -1,0 +1,5 @@
+{
+  "AppSyncApiName": "monapplinew",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false
+}
